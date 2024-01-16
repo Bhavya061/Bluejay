@@ -1,0 +1,97 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+class Employee {
+    String name;
+    int position;
+    int hoursWorked;
+
+    Employee(String name, int position, int hoursWorked) {
+        this.name = name;
+        this.position = position;
+        this.hoursWorked = hoursWorked;
+    }
+}
+
+public class EmployeeAnalyzer {
+
+    public static void main(String[] args) {
+        // Replace "input.txt" with the actual file path and name
+        String inputFile = "input.txt";
+        List<Employee> employees = readInputFile(inputFile);
+
+        List<String> outputLines = analyzeEmployees(employees);
+
+        // Writing output to output.txt
+        writeOutputToFile(outputLines);
+    }
+
+    private static List<Employee> readInputFile(String filePath) {
+        List<Employee> employees = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Assuming the input file has the format: name position hoursWorked
+                String[] parts = line.split(" ");
+                String name = parts[0];
+                int position = Integer.parseInt(parts[1]);
+                int hoursWorked = Integer.parseInt(parts[2]);
+                employees.add(new Employee(name, position, hoursWorked));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return employees;
+    }
+
+    private static List<String> analyzeEmployees(List<Employee> employees) {
+        List<String> outputLines = new ArrayList<>();
+
+        // a) Employees who have worked for 7 consecutive days
+        outputLines.add("Employees who have worked for 7 consecutive days:");
+        analyzeConsecutiveDays(employees, 7, outputLines);
+
+        // b) Employees who have less than 10 hours of time between shifts but greater than 1 hour
+        outputLines.add("\nEmployees who have less than 10 hours between shifts but greater than 1 hour:");
+        analyzeTimeBetweenShifts(employees, 1, 10, outputLines);
+
+        // c) Employees who have worked for more than 14 hours in a single shift
+        outputLines.add("\nEmployees who have worked for more than 14 hours in a single shift:");
+        analyzeSingleShift(employees, 14, outputLines);
+
+        return outputLines;
+    }
+
+    private static void analyzeConsecutiveDays(List<Employee> employees, int consecutiveDays, List<String> outputLines) {
+        // Implementation for analyzing consecutive days
+        // Your logic goes here
+        // Example: Loop through employees and check if they have worked for consecutiveDays
+    }
+
+    private static void analyzeTimeBetweenShifts(List<Employee> employees, int minHours, int maxHours, List<String> outputLines) {
+        // Implementation for analyzing time between shifts
+        // Your logic goes here
+        // Example: Loop through employees and check if they have less than maxHours but greater than minHours between shifts
+    }
+
+    private static void analyzeSingleShift(List<Employee> employees, int maxHours, List<String> outputLines) {
+       
+    }
+
+    private static void writeOutputToFile(List<String> outputLines) {
+        // Writing output to output.txt
+        try (FileWriter writer = new FileWriter("output.txt")) {
+            for (String line : outputLines) {
+                writer.write(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
